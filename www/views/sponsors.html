@@ -1,0 +1,25 @@
+</div>
+<div class="container">
+    <div class="h3 text-center">{{title}}</div>
+    <div ng-show="loading">
+        <img class="img-responsive" src="images/loading.gif" alt="loading..." />
+    </div>
+    <div ng-show="showList">
+        <div class="h3 text-center">Sponsors</div>
+        <table class="table table-striped" cols="2">
+            <tr ng-repeat="sponsor in sponsors">
+                <td class="sponsor-title">
+                    <a ng-click="clickDetails('{{sponsor.nid}}')">{{sponsor.title}}</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-show="showDetails">
+        <a class="btn btn-default btn-sm" ng-click="clickBack()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Back</a>
+        <div class="sponsor-logo"><img class="img-responsive" ng-src="{{detail.logo}}" alt="Logo" /></div>
+        <div class="h3 text-center">{{detail.title}}</div>
+        <div>{{detail.body}}</div>
+        <div class="h4" ng-show="detail.link !== ''"><strong>Url:</strong> <a href="{{detail.link}}">{{detail.link}}</a></div>
+        <div class="h4"><strong>Support Level:</strong> {{detail.level}}</div>
+    </div>
+</div>

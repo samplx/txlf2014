@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="h3 text-center">Texas Linux Festival 2014</div>
+    <div class="h3 text-center">Check-In</div>
+    <div ng-show="alert.msg !== ''">
+        <alert type="alert.type" close="closeAlert()">{{alert.msg}}</alert>
+    </div>    
+    <form name="checkInForm" role="form">
+        <div class="form-group">
+            <label for="checkInFirstName">First Name</label>
+            <input type="text" class="form-control" id="checkInFirstName" ng-model="firstName" placeholder="First Name" required="required" maxlength="60" />
+        </div>
+        <div class="form-group">
+            <label for="checkInLastName">Last Name</label>
+            <input type="text" class="form-control" id="checkInLastName" ng-model="lastName" placeholder="Last Name"  required="required" maxlength="60" />
+        </div>
+        <div class="form-group">
+            <label for="checkInEmailAddress">Email</label>
+            <input type="email" class="form-control" id="checkInEmailAddress" ng-model="emailAddress" placeholder="Email"  required="required" maxlength="75" />
+        </div>
+        <div class="form-group">
+            <label for="checkInZipCode">ZipCode/Postal Code</label>
+            <input type="text" class="form-control" id="checkInZipCode" ng-model="zipCode" placeholder="Zip/Postal" required="required" maxlength="10" />
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="clickCheckIn()"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Check-In</button>
+    </form>
+</div>

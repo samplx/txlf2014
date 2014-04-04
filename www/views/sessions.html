@@ -1,0 +1,58 @@
+</div>
+<div class="container">
+    <div class="h3 text-center">{{title}}</div>
+    <div ng-show="loading">
+        <img class="img-responsive" src="images/loading.gif" alt="loading..." />
+    </div>
+    <div ng-show="showList">
+        <div class="h3 text-center">Sessions</div>
+        <div class="row">
+            <div class="col-xs-7">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchFor" placeholder="Search" ng-model="searchFilter" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="sessionSearch()">Search</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-sort"></span>&nbsp;Sort By <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ng-click="sessionSort('time')"><span ng-show="sortBy=='time'" class="glyphicon glyphicon-ok"></span>Time</a></li>
+                        <li><a ng-click="sessionSort('presenter')"><span ng-show="sortBy=='presenter'" class="glyphicon glyphicon-ok"></span>Presenter</a></li>
+                        <li><a ng-click="sessionSort('title')"><span ng-show="sortBy=='title'" class="glyphicon glyphicon-ok"></span>Title</a></li>
+                        <li><a ng-click="sessionSort('experience')"><span ng-show="sortBy=='experience'" class="glyphicon glyphicon-ok"></span>Experience Level</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped" cols="2">
+            <tr ng-repeat="session in sessions">
+                <td class="session-timeslot">
+                    <small>{{session.timeslot}}</small>
+                </td>
+                <td class="session-title">
+                    <a ng-click="clickDetails('{{session.nid}}')">{{session.title}}</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-show="showDetails">
+        <a class="btn btn-default btn-sm" ng-click="clickBack()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Back</a>
+        <div class="h4">{{detail.title}}</div>
+        <div><strong>When:</strong>{{detail.timeslot}} <strong>Where:</strong>{{detail.room}}</div>
+        <div>{{detail.body}}</div>
+        <div>
+            <div class="h4 text-center">{{detail.displayName}}</div>
+            <img class="pull-left img-thumbnail" ng-src="{{detail.pictureUrl}}" alt="presenter" />
+            <div class="clearfix">{{detail.bio}}</div>
+            <div ng-show="detail.companyUrl !== ''"><strong>Url:</strong> <a href="{{detail.companyUrl}}">{{detail.companyUrl}}</a></div>
+            <div ng-show="detail.company !== ''"><strong>Company:</strong> {{detail.company}}</div>
+        </div>
+        <div><strong>Experience level:</strong> {{detail.experience}}</div>
+        <a class="btn btn-default btn-sm" ng-click="clickBack()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Back</a>
+    </div>
+</div>

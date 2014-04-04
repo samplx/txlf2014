@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,www}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <title>Texas Linux Festival 2014</title>
+</head>
+<body ng-app="txlfApp">
+    <div class="btn-toolbar app-nav" role="navigation" ng-controller="MenuController">
+        <a class="btn btn-default btn-sm" ng-class="{ active: page == '/venue' }" href="#/venue"><span class="glyphicon glyphicon-home"></span>&nbsp;Venue</a>
+        <a class="btn btn-default btn-sm" ng-class="{ active: page == '/sessions' }" href="#/sessions"><span class="glyphicon glyphicon-list"></span>&nbsp;Sessions</a>
+        <a class="btn btn-default btn-sm" ng-class="{ active: page == '/scan' }" href="#/scan"><span class="glyphicon glyphicon-qrcode"></span>&nbsp;Scan ID</a>
+        <a class="btn btn-default btn-sm" ng-class="{ active: page == '/sponsors' }" href="#/sponsors"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Sponsors</a>
+        <a class="btn btn-default btn-sm" ng-show="checkInEnabled" ng-class="{ active: page == '/checkIn' }" href="#/checkIn"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Check-In</a>
+    </div>
+    <div class="view-container">
+        <div ng-view class="view-frame"></div>
+    </div>
+    <!-- phonegap/cordova and plugin scripts. -->
+    <script type="text/javascript" src="phonegap.js"></script>
+    <script type="text/javascript" src="barcodescanner.js"></script>
+    <script type="text/javascript" src="contacts.js"></script>
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    
+    <!-- build:js({.tmp,www}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/menu.js"></script>
+    <script src="scripts/controllers/sessions.js"></script>
+    <script src="scripts/controllers/sponsors.js"></script>
+    <script src="scripts/services/cordovaService.js"></script>
+    <script src="scripts/services/sessionsData.js"></script>
+    <script src="scripts/services/sponsorsData.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

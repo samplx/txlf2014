@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="h3 text-center">{{title}}</div>
+    <div class="h3 text-center">Scan ID (QR code)</div>
+    <div ng-show="alert.msg !== ''">
+        <alert type="alert.type" close="closeAlert()">{{alert.msg}}</alert>
+    </div>    
+    <div ng-show="loading">
+        <img class="img-responsive" src="images/loading.gif" alt="loading..." />
+    </div>
+    <div ng-show="showScan">
+        <p>Festival badges contain a QR code which can be read for contact information.</p>
+        <button class="btn btn-default" type="button" ng-click="clickImport()">
+            <span class="glyphicon glyphicon-import"></span>&nbsp;Import
+        </button>
+    </div>
+    <div ng-show="showData">
+        <table class="table" cols="2">
+            <tr>
+                <th class="scan-data">Name</th>
+                <td class="scan-data">{{scanData.n}}</td>
+            </tr>
+            <tr>
+                <th class="scan-data">Work Phone</th>
+                <td class="scan-data">{{scanData.pw}}</td>
+            </tr>
+            <tr>
+                <th class="scan-data">Mobile Phone</th>
+                <td class="scan-data">{{scanData.pm}}</td>
+            </tr>
+            <tr>
+                <th class="scan-data">Email Address</th>
+                <td class="scan-data">{{scanData.e}}</td>
+            </tr>
+            <tr>
+                <th class="scan-data">Website</th>
+                <td class="scan-data">{{scanData.www}}</td>
+            </tr>
+            <tr>
+                <th class="scan-data">Title</th>
+                <td class="scan-data">{{scanData.t}}</td>
+            </tr>
+            <tr>
+                <th class="scan-data">Company</th>
+                <td class="scan-data">{{scanData.c}}</td>
+            </tr>
+            <tr>
+                <th class="scan-data">Address</th>
+                <td class="scan-data">{{scanData.adr}}</td>
+            </tr>
+        </table>
+        <button class="btn btn-default" type="button" ng-click="clickImport()">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;Save
+        </button>
+    </div>
+</div>
+
