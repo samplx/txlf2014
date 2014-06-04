@@ -28,15 +28,15 @@ var txlfApp = angular.module('txlfApp', [
 txlfApp.constant('appConfig', {
     'title' : 'Texas Linux Festival 2014',
     'dates' : 'Friday June 13 and Saturday June 14',
-    'sessionScheduleUrl' : 'http://2013.texaslinuxfest.org/session-schedule_mobile?JSON_CALLBACK=sessions',
-    'sponsorsUrl' : 'http://2013.texaslinuxfest.org/sponsors_mobile?JSON_CALLBACK=sponsors',
+    'sessionScheduleUrl' : 'http://2014.texaslinuxfest.org/sessions_mobile',
+    'sponsorsUrl' : 'http://2014.texaslinuxfest.org/sponsors_mobile',
     'checkInUrl' : 'https://register.texaslinuxfest.org/reg6/checkin',
     // use UTC since we do not know what phone timezone is
     // test date Jan 1, 2014, actual June 13, 2014
     // debug 
-    'checkInStart' : Date.UTC(2014, 0, 1, 5)
+    // 'checkInStart' : Date.UTC(2014, 0, 1, 5)
     // release
-    // 'checkInStart': Date.UTC(2014, 5, 13, 5)
+    'checkInStart': Date.UTC(2014, 5, 13, 5)
 });
 
 txlfApp.config(['$routeProvider', function($routeProvider) {

@@ -2,15 +2,15 @@
 
 var _sessionsData = null;
 
-function parseSessionsData(jsonpData) {
-    angular.forEach(jsonpData.nodes, function (item) {
-        /* jshint camelcase: false */
+function parseSessionsData(jsonData) {
+    angular.forEach(jsonData.nodes, function (item) {
         var n = _sessionsData.list.length;
         var session = _sessionsData.list[n] = {};
+//        console.log('parseSessionsData, adding node ' + item.node);
+        session.nid = n;
         session.title = item.node.title;
-        session.room = item.node.field_session_room;
-        session.nid = item.node.nid;
-        session.slot = item.node.field_session_slot;
+        session.room = item.node.room;
+        session.slot = item.node.timeSlot;
         // slot format is
         // 012345678901234
         // Day, MM/DD/YYYY - HH:mmxm - Day, MM/DD/YYYY - HH:mmxm
@@ -77,27 +77,8 @@ function parseSessionsData(jsonpData) {
         session.timeslot = dayOfWeek + ', ' + startTime + '-' + endTime;
         session.date = new Date(year, month, day, startHours, startMinutes);
         session.body = item.node.body;
-        session.firstName = item.node.field_profile_first_name;
-        session.lastName = item.node.field_profile_last_name;
-        if ((session.firstName !== '') && (session.lastName !== '')) {
-            session.displayName = session.firstName + ' ' + session.lastName;
-        } else if (session.firstName !== '') {
-            session.displayName = session.firstName;
-        } else if (session.lastName !== '') {
-            session.displayName = session.lastName;
-        } else {
-            session.displayName = 'TXLF Speaker';
-        }
-        session.url = item.node.uri;
-        session.bio = item.node.field_profile_bio;
-        if (item.node.picture === '') {
-            session.pictureUrl = _sessionsData.noAuthorImage;
-        } else {
-            session.pictureUrl = item.node.picture;
-        }
-        session.company = item.node.field_profile_company;
-        session.companyUrl = item.node.field_profile_website;
-        session.experience = item.node.field_experience;
+        session.displayName = item.node.speakers;
+        session.experience = item.node.experienceLevel;
         if (session.experience.indexOf('Novice') != -1) {
             session.experienceLevel = 1;
         } else if (session.experience.indexOf('Intermediate') != -1) {
@@ -116,19 +97,20 @@ angular.module('txlfApp')
         _sessionsData = {
             _promise : null,
             list : [],
-            loaded : false,
-            noAuthorImage : config.noAuthorImage
+            loaded : false
         };
 
         _sessionsData.load = function() {
             if (_sessionsData._promise === null) {
-                _sessionsData._promise = $http.jsonp(config.sessionScheduleUrl)
+//                console.log('get ' + config.sessionScheduleUrl);
+                _sessionsData._promise = $http.get(config.sessionScheduleUrl)
                         .success(function(data) {
-                            _sessionsData.data = data;
-                            _sessionsData.list = parseSessionsData(data);
+//                            console.log('success: calling parseSessionsData');
+                            parseSessionsData(data);
                             _sessionsData.loaded = true;
                         })
                         .error(function() {
+                            console.log('error: session');
                             if (!_sessionsData.loaded) {
                                 $window.alert('Unable to load schedule data.');
                             }
@@ -140,13 +122,4 @@ angular.module('txlfApp')
         return _sessionsData;
     }
 ]);
-
-/**
- *  JSONP call-back entry.
- */
-function sessions(data) {
-    parseSessionsData(data);
-    _sessionsData.loaded = true;
-//    console.log('sessions data loaded, _sessionsData.list.length='+_sessionsData.list.length);
-}
 

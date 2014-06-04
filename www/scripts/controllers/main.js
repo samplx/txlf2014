@@ -18,8 +18,8 @@
 'use strict';
 
 angular.module('txlfApp')
-.controller('MainController', ['$scope', '$sce', '$window', 'appConfig', 'cordovaService', 
-    function MainControllerFactory($scope, $sce, $window, config, cordovaService) {
+.controller('MainController', ['$scope', '$sce', '$window', '$rootScope', 'appConfig', 'cordovaService', 
+    function MainControllerFactory($scope, $sce, $window, $rootScope, config, cordovaService) {
         $scope.alert = { type: 'success', msg: '' };
 
         $scope.title = config.title;
@@ -28,6 +28,7 @@ angular.module('txlfApp')
         $scope.showScan = false;
         $scope.showData = false;
         $scope.scanData = {};
+        $scope.scanner = null;
         
         var frameHeight = $window.innerHeight - $('#checkInFrame').outerHeight();
         var checkInFrame = 
@@ -42,25 +43,42 @@ angular.module('txlfApp')
         };
         
         $scope.clickImport = function () {
-            console.log('clickImport: stub');
-            $window.plugins.barcodeScanner.scan(
+//            console.log('clickImport: stub');
+            $scope.alert.msg = 'Loading barcode scanner.';
+            $scope.scanner.scan(
                 function (result) {
-                    console.log('barcode text="' + result.text + '"');
-                    console.log('barcode format=' + result.format);
-                    console.log('barcode cancelled=' + result.cancelled);
-                    $scope.scanData = angular.fromJson(result.text);
-                    $scope.showScan = false;
-                    $scope.showData = true;
+//                    console.log('barcode text="' + result.text + '"');
+//                    console.log('barcode format=' + result.format);
+//                    console.log('barcode cancelled=' + result.cancelled);
+                    if (result.cancelled) {
+                        $scope.alert = {type: 'warning', msg: 'Scan cancelled.'};
+                    } else if (result.format != 'QR_CODE') {
+                        $scope.alert = {type: 'warning', msg: 'Expected QR code format.'};
+                    } else {
+                        try {
+                            $scope.scanData = angular.fromJson(result.text);
+                            $scope.showScan = false;
+                            $scope.showData = true;
+                            if ($scope.scanData.title && ($scope.scanData.t === undefined)) {
+                                $scope.scanData.t = $scope.scanData.title;
+                            }
+                        } catch (e) {
+                            $scope.alert = {type: 'danger', msg :'Unable to extract data from QR code.'};
+                        }
+                    }
+                    $rootScope.$digest();
                 },
                 function (error) {
-                    $scope.alert.type = 'warning';
-                    $scope.alert.msg = 'Unable to read QR code.';
+                    $scope.alert = {type: 'warning',
+                                    msg: 'Unable to read QR code. Error: ' + error};
+                    $rootScope.$digest();
                 }
             );
         };
         
         $scope.clickSave = function () {
-            console.log('clickSave: stub');
+//            console.log('clickSave: stub');
+            var scanData = $scope.scanData;
             var contact = navigator.contacts.create();
             contact.displayName = scanData.n;
             contact.nickname = scanData.n;
@@ -87,64 +105,50 @@ angular.module('txlfApp')
             if (scanData.adr) {
                 contact.addresses = [ new ContactAddress(true, 'home', scanData.adr, '', '', '', '', '') ] ;
             }
-            contract.note = config.title;
+            contact.note = config.title;
             contact.categories = [ new ContactField('work', config.title, false) ];
             
             contact.save(
                 function (success) {
                     $scope.alert.msg = 'Saved contact information.';
+                    $scope.showScan = true;
+                    $scope.showData = false;
+                    $rootScope.$digest();
                 }, function (error) {
-                    $scope.alert.type = 'danger';
-                    $scope.alert.msg = 'Error saving contact: ' + error.code;
+                    $scope.alert = {type: 'danger', msg: 'Error saving contact: ' + error.code};
+                    $scope.showScan = true;
+                    $scope.showData = false;
+                    $rootScope.$digest();
                 }
             );
         };
         
-        $scope.clickCheckIn = function () {
-            if ($scope.firstName === undefined) {
-                console.log('clickCheckIn(): need firstName');
-                $('#checkInFirstName').focus();
-            } else if ($scope.lastName === undefined) {
-                console.log('clickCheckIn(): need lastName');
-                $('#checkInLastName').focus();
-            } else if ($scope.emailAddress === undefined) {
-                console.log('clickCheckIn(): need emailAddress');
-                $('#checkInEmailAddress').focus();
-            } else if ($scope.zipCode === undefined) {
-                console.log('clickCheckIn(): need zipCode');
-                $('#checkInZipCode').focus();
-            } else if ($scope.checkInForm.$valid) {
-                console.log('clickCheckIn(): stub');
-                console.log('$scope.firstName='+$scope.firstName);
-                console.log('$scope.lastName='+$scope.lastName);
-                console.log('$scope.emailAddress='+$scope.emailAddress);
-                console.log('$scope.zipCode='+$scope.zipCode);
-                console.log('$scope.checkInForm.$valid='+$scope.checkInForm.$valid);
-                $scope.alert.msg = 'I guess it worked.';
-            }
-        };
-        
+        $scope.clickScan = function () {
+            cordovaService.ready.then(function () {
+                console.log('clickScan: stub');
+                if ($scope.scanner) {
+                    $scope.showScan = true;
+                }
+            });
+        }
+
         cordovaService.ready.then(function () {
             $scope.loading = false;
-            if (!cordova.plugins) {
+            if (!cordova || !cordova.plugins) {
                 $scope.alert.type = 'danger';
-                $scope.alert.msg = 'Cordova plugins are missing.';
+                $scope.alert.msg = 'Cordova plugin is missing.';
+                console.log('window.cordova='+JSON.stringify(window.cordova));
             } else if (!cordova.plugins.barcodeScanner) {
                 $scope.alert.type = 'danger';
-                $scope.alert.msg = 'Barcode scanner plugin is missing.';
+                $scope.alert.msg = 'Barcode plugin is missing.';
             } else if (!navigator.contacts) {
                 $scope.alert.type = 'danger';
                 $scope.alert.msg = 'Contact plugin is missing.';
             } else {
                 $scope.showScan = true;
+                $scope.scanner = cordova.plugins.barcodeScanner;
             }
         });
-        
-        $scope.clickScan = function () {
-            cordovaService.ready.then(function () {
-                console.log('clickScan: stub');
-            });
-        }
     }
 ]);
 

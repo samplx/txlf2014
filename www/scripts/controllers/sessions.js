@@ -102,15 +102,17 @@ angular.module('txlfApp')
             if (sortBy !== undefined) {
                 $scope.sortBy = sortBy;
             }
-            console.log('sessionSort, sortBy='+$scope.sortBy);
-            if ($scope.sortBy == 'presenter') {
-                $scope.sessions.sort(presenterSort);
-            } else if ($scope.sortBy == 'title') {
-                $scope.sessions.sort(titleSort);
-            } else if ($scope.sortBy == 'experience') {
-                $scope.sessions.sort(experienceSort);
-            } else {
-                $scope.sessions.sort(timeSort);
+            if ($scope.sessions) {
+                console.log('sessionSort, sortBy='+$scope.sortBy);
+                if ($scope.sortBy == 'presenter') {
+                    $scope.sessions.sort(presenterSort);
+                } else if ($scope.sortBy == 'title') {
+                    $scope.sessions.sort(titleSort);
+                } else if ($scope.sortBy == 'experience') {
+                    $scope.sessions.sort(experienceSort);
+                } else {
+                    $scope.sessions.sort(timeSort);
+                }
             }
         };
 

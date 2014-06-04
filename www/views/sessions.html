@@ -44,14 +44,8 @@
         <a class="btn btn-default btn-sm" ng-click="clickBack()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Back</a>
         <div class="h4">{{detail.title}}</div>
         <div><strong>When:</strong>{{detail.timeslot}} <strong>Where:</strong>{{detail.room}}</div>
+        <div class="h4 text-center">{{detail.displayName}}</div>
         <div>{{detail.body}}</div>
-        <div>
-            <div class="h4 text-center">{{detail.displayName}}</div>
-            <img class="pull-left img-thumbnail" ng-src="{{detail.pictureUrl}}" alt="presenter" />
-            <div class="clearfix">{{detail.bio}}</div>
-            <div ng-show="detail.companyUrl !== ''"><strong>Url:</strong> <a href="{{detail.companyUrl}}">{{detail.companyUrl}}</a></div>
-            <div ng-show="detail.company !== ''"><strong>Company:</strong> {{detail.company}}</div>
-        </div>
         <div><strong>Experience level:</strong> {{detail.experience}}</div>
         <a class="btn btn-default btn-sm" ng-click="clickBack()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Back</a>
     </div>

@@ -2,6 +2,10 @@
 
 var _sponsorsData = null;
 
+function sponsorsCompare(a, b) {
+    return (b.levelId - a.levelId);
+}
+
 function parseSponsorsData(jsonpData) {
     angular.forEach(jsonpData.nodes, function (item) {
         /* jshint camelcase: false */
@@ -25,6 +29,9 @@ function parseSponsorsData(jsonpData) {
                 break;
             case 'Silver':
                 sponsor.levelId = 20;
+                break;
+            case 'Bronze':
+                sponsor.levelId = 15;
                 break;
             case 'Community Exhibitor':
                 sponsor.levelId = 10;
@@ -54,10 +61,10 @@ angular.module('txlfApp')
 
         _sponsorsData.load = function() {
             if (_sponsorsData._promise === null) {
-                _sponsorsData._promise = $http.jsonp(config.sponsorsUrl)
+                _sponsorsData._promise = $http.get(config.sponsorsUrl)
                         .success(function(data) {
-                            _sponsorsData.data = data;
-                            _sponsorsData.list = parseSponsorsData(data);
+                            parseSponsorsData(data);
+                            _sponsorsData.list.sort(sponsorsCompare);
                             _sponsorsData.loaded = true;
                         })
                         .error(function() {
@@ -77,9 +84,6 @@ angular.module('txlfApp')
  *  JSONP call-back entry.
  */
 function sponsors(data) {
-    var sponsorsCompare = function (a, b) {
-        return (b.levelId - a.levelId);
-    };
     
     parseSponsorsData(data);
 
