@@ -53,7 +53,6 @@
     -->
     <gap:plugin name="com.phonegap.plugins.barcodescanner" version="1.1.0" />
     <gap:plugin name="org.apache.cordova.contacts" version="0.2.9" />
-    <gap:plugin name="org.apache.cordova.console" version="0.2.8" />
     
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
