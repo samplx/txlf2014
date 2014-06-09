@@ -43,7 +43,9 @@ txlfApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'views/main.html', controller: 'MainController'});
     $routeProvider.when('/venue', {templateUrl: 'views/venue.html', controller: 'MainController'});
     $routeProvider.when('/sessions', {templateUrl: 'views/sessions.html', controller: 'SessionsController'});
+    $routeProvider.when('/session/:sessionId', {templateUrl: 'views/session.html', controller: 'SessionController'});
     $routeProvider.when('/sponsors', {templateUrl: 'views/sponsors.html', controller: 'SponsorsController'});
+    $routeProvider.when('/sponsor/:sponsorId', {templateUrl: 'view/sponsor.html', controller: 'SponsorsController'});
     $routeProvider.when('/scan', {templateUrl: 'views/scan.html', controller: 'MainController'});
     $routeProvider.when('/checkIn', {templateUrl: 'views/check-in.html', controller: 'MainController'});
     $routeProvider.otherwise({redirectTo: '/home'});

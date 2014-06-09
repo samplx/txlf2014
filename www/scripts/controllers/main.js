@@ -44,7 +44,7 @@ angular.module('txlfApp')
         
         $scope.clickImport = function () {
 //            console.log('clickImport: stub');
-            $scope.alert.msg = 'Loading barcode scanner.';
+            $scope.alert= {type: 'success', msg: 'Loading barcode scanner.'};
             $scope.scanner.scan(
                 function (result) {
 //                    console.log('barcode text="' + result.text + '"');
