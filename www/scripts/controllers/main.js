@@ -17,6 +17,25 @@
  */
 'use strict';
 
+// ~Salutation~First Name~Last Name~Title~Company~Email~Phone~Zip~badge_id~reprint~type~price~size~addons~
+function parseDelimited(fields) {
+    var result = {};
+    var name = '';
+    if (fields[1] !== '') {
+        name = fields[1] + ' ';
+    }
+    if (fields[2] !== '') {
+        name += fields[2] + ' ';
+    }
+    name += fields[3];
+    result.n = name;
+    result.t = fields[4];
+    result.c = fields[5];
+    result.e = fields[6];
+    result.pm = fields[7];
+    return result;
+}
+   
 angular.module('txlfApp')
 .controller('MainController', ['$scope', '$sce', '$window', '$rootScope', 'appConfig', 'cordovaService', 
     function MainControllerFactory($scope, $sce, $window, $rootScope, config, cordovaService) {
@@ -63,7 +82,12 @@ angular.module('txlfApp')
                                 $scope.scanData.t = $scope.scanData.title;
                             }
                         } catch (e) {
-                            $scope.alert = {type: 'danger', msg :'Unable to extract data from QR code.'};
+                            var fields = result.text.split('~');
+                            if (fields.length >= 7) {
+                                $scope.scanData = parseDelimited(fields);
+                            } else {
+                                $scope.alert = {type: 'danger', msg :'Unable to extract data from QR code.'};
+                            }
                         }
                     }
                     $rootScope.$digest();
