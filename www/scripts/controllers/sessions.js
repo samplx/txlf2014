@@ -34,16 +34,8 @@ angular.module('txlfApp')
         };
 
         var presenterSort = function (a, b) {
-            var aName = a.lastName.toLowerCase();
-            var bName = a.lastName.toLowerCase();
-            if (aName < bName) {
-                return -1;
-            }
-            if (aName > bName) {
-                return 1;
-            }
-            aName = a.firstName.toLowerCase();
-            bName = b.firstName.toLowerCase();
+            var aName = a.displayName.toLowerCase();
+            var bName = a.displayName.toLowerCase();
             if (aName < bName) {
                 return -1;
             }

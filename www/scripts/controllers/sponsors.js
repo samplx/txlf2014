@@ -22,27 +22,9 @@ angular.module('txlfApp')
     function SponsorsControllerFactory($scope, config, sponsors) {
         $scope.title = config.title;
         $scope.sponsors = [];
-        $scope.showDetails = false;
         $scope.showList = false;
         $scope.loading = true;
-        $scope.details = {};
-        
-        $scope.clickDetails = function (nid) {
-            for (var n=0, len= $scope.sponsors.length; n < len; n++) {
-                if ($scope.sponsors[n].nid == nid) {
-                    $scope.detail = $scope.sponsors[n];
-                    $scope.showList = false;
-                    $scope.showDetails = true;
-                    break;
-                }
-            }
-        };
 
-        $scope.clickBack = function () {
-            $scope.showDetails = false;
-            $scope.showList = true;
-        };
-        
         sponsors.load().then(function () {
             $scope.sponsors = sponsors.list;
             $scope.showList = true;

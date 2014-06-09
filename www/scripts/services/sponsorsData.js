@@ -61,13 +61,18 @@ angular.module('txlfApp')
 
         _sponsorsData.load = function() {
             if (_sponsorsData._promise === null) {
+                console.log('loading sponsors: ' + config.sponsorsUrl);
                 _sponsorsData._promise = $http.get(config.sponsorsUrl)
                         .success(function(data) {
+                            console.log('got sponsors data');
                             parseSponsorsData(data);
+                            console.log('parseSponsorsData complete');
                             _sponsorsData.list.sort(sponsorsCompare);
+                            console.log('sort complete');
                             _sponsorsData.loaded = true;
                         })
-                        .error(function() {
+                        .error(function(data, status) {
+                            console.log('sponsors data load error: ' + status);
                             if (!_sponsorsData.loaded) {
                                 $window.alert('Unable to load sponsor data.');
                             }
@@ -79,16 +84,4 @@ angular.module('txlfApp')
         return _sponsorsData;
     }
 ]);
-
-/**
- *  JSONP call-back entry.
- */
-function sponsors(data) {
-    
-    parseSponsorsData(data);
-
-    _sponsorsData.list.sort(sponsorsCompare);
-    _sponsorsData.loaded = true;
-    // console.log('sponsors data loaded, _sponsorsData.list.length='+_sponsorsData.list.length);
-}
 
