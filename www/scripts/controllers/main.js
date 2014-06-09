@@ -85,6 +85,8 @@ angular.module('txlfApp')
                             var fields = result.text.split('~');
                             if (fields.length >= 7) {
                                 $scope.scanData = parseDelimited(fields);
+                                $scope.showScan = false;
+                                $scope.showData = true;
                             } else {
                                 $scope.alert = {type: 'danger', msg :'Unable to extract data from QR code.'};
                             }
